@@ -1,0 +1,97 @@
+export default class Component extends React.Component {
+  constructor(props) {
+    super(props);
+    this.state = {
+      value: [
+        {
+          item: 1,
+          id: 0,
+        },
+      ],
+    };
+  }
+
+  incrementBtn = () => {
+    const lastValue = this.state.value[0].item;
+    const newValue = lastValue + 1;
+    const lastId = this.state.value[0].id;
+    const newId = lastId + 1;
+
+    const newObj = {
+      item: newValue,
+      id: newId,
+    };
+
+    const newArray = [newObj, ...this.state.value];
+    this.setState({
+      value: newArray,
+    });
+  };
+
+  decrementBtn = () => {
+    const lastValue = this.state.value[0].item;
+    const newValue = lastValue - 1;
+    const lastId = this.state.value[0].id;
+    const newId = lastId + 1;
+
+    const newObj = {
+      item: newValue,
+      id: newId,
+    };
+
+    const newArray = [newObj, ...this.state.value];
+    this.setState({
+      value: newArray,
+    });
+  };
+
+  deleteItem = (id) => {
+    const filtredItems = this.state.value.filter((item) => item.id !== id);
+    this.setState({ value: filtredItems });
+  };
+
+  render() {
+    const {
+      value,
+    } = this.state;
+
+    const valueElements = value.map(item => {
+      return (<button
+        type="button"
+        className="list-group-item list-group-item-action"
+        key={item.id}
+        onClick={() => this.deleteItem(item.id)}
+      >{item.item}
+      </button>)
+  }) //  map - динамическое формирование JSX-разметки
+
+    return (
+      <div>
+        <div
+          className="btn-group font-monospace"
+          role="group"
+        >
+          <button
+            type="button"
+            className="btn btn-outline-success"
+            onClick={this.incrementBtn}
+          >
+          +
+          </button>
+          <button
+            type="button"
+            className="btn btn-outline-danger"
+            onClick={this.decrementBtn}
+          >
+          -
+          </button>
+        </div>
+        <div
+          className="list-group"
+        >
+          {valueElements}
+        </div>
+      </div>
+    );
+  }
+}
